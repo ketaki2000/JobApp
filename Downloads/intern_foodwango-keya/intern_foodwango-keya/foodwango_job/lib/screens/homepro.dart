@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/account.dart';
 import 'package:foodwango_job/screens/interview.dart';
 
 class Homepro extends StatefulWidget {
+  final User userDb;
+  Homepro({Key key, @required this.userDb}) : super(key: key);
   @override
-  _HomeproState createState() => _HomeproState();
+  _HomeproState createState() => _HomeproState(userDb: userDb);
 }
 
 class _HomeproState extends State<Homepro> {
   String val = "false";
   bool pop;
-
+  final User userDb;
+  _HomeproState({Key key, @required this.userDb}) : super();
   @override
   Widget build(BuildContext context) {
     int next = 0;
@@ -62,7 +66,7 @@ class _HomeproState extends State<Homepro> {
             }
             if (next == 4) {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Account();
+                return Account(userDb: userDb,);
               }));
             }
           });

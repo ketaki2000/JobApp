@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/Education.dart';
 import 'package:foodwango_job/screens/aboutme.dart';
 import 'package:foodwango_job/screens/interests.dart';
@@ -8,20 +9,17 @@ import 'package:foodwango_job/screens/skills.dart';
 import 'package:foodwango_job/utils/database_helper.dart';
 
 class Profile extends StatefulWidget {
+  final User userDb;
+  Profile({Key key, @required this.userDb}) : super(key: key);
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileState createState() => _ProfileState(userDb: userDb);
 }
 
 
 class _ProfileState extends State<Profile> {
+  final User userDb;
+  _ProfileState({Key key, @required this.userDb}) : super();
 
-  List<String> experiences = [
-    'Fresher',
-    '1-6 Months',
-    '1-2 Years',
-    '2-5 Years',
-    '5+ Years'
-  ];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,26 +40,29 @@ class _ProfileState extends State<Profile> {
             ],
           ),
           Text(
-            'Full Name',
+            userDb.name,
             style: TextStyle(fontSize: 18, color: Color(0xFF21BFBD)),
             textDirection: TextDirection.ltr,
             textAlign: TextAlign.center,
           ),
-          Text(
-            'phone number',
-            style: TextStyle(fontSize: 16, color: Colors.black),
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.center,
-          ),
+            /*Text(
+              userDb.mobile,
+              style: TextStyle(fontSize: 16, color: Colors.black),
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.center,
+            ),
+          */
+
           ListTile(
             leading: Icon(Icons.person),
             trailing: Icon(Icons.edit),
             title: Text('About Me'),
+
             subtitle: Text('Click to fill about you'),
             onTap: () {
               setState(() {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return AboutMe();
+                  return AboutMe(userDb:userDb);
                 }));
               });
             },
@@ -96,7 +97,7 @@ class _ProfileState extends State<Profile> {
                   spacing: 5.0,
                   runSpacing: 5.0,
                   children: <Widget>[
-                    choiceChipWidget(experiences),
+                    Experience(userDb: userDb,)
                   ],
                 )),
           ),
@@ -164,7 +165,7 @@ class _ProfileState extends State<Profile> {
             onTap: () {
               setState(() {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Education();
+                  return Education(userDb:userDb);
                 }));
               });
             },
@@ -177,7 +178,7 @@ class _ProfileState extends State<Profile> {
             onTap: () {
               setState(() {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Personal();
+                  return Personal(userDb:userDb);
                 }));
               });
             },
@@ -188,6 +189,7 @@ class _ProfileState extends State<Profile> {
   }
 
 }
+/*
 class choiceChipWidget extends StatefulWidget {
   final List<String> reportList;
 
@@ -234,4 +236,4 @@ class _choiceChipWidgetState extends State<choiceChipWidget> {
       children: _buildChoiceList(),
     );
   }
-}
+}*/

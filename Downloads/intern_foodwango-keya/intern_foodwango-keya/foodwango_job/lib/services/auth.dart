@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodwango_job/models/user.dart';
+import 'package:foodwango_job/models/RecruiterDb.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/services/database.dart';
 
 class Authservice {
@@ -38,13 +39,31 @@ class Authservice {
   }*/
 
   //register with email and password
-  Future regInWithEmail(
+User userDb;
+Recruiter recDb;
+  /*Future regInWithEmail(
       String email, String password, String name, String select) async {
+    try {
+      print('trying');
+      AuthResult result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseUser user = result.user;
+      userDb.uid=user.uid;
+      print(user.uid);
+      await DatabaseService(uid: user.uid,userDb:userDb).updateUserData(select);
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }*/
+  Future regInWithEmail(String email, String password, String name,
+      String select) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
-      await DatabaseService(uid: user.uid).updateUserData(select);
+      await DatabaseService(uid: user.uid,userDb: userDb).updateUserData(select);
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

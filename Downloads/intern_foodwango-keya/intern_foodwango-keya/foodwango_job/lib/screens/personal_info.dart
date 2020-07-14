@@ -2,21 +2,33 @@ import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/info.dart';
 import 'package:foodwango_job/screens/profile.dart';
 
 class Personal extends StatefulWidget {
+  final User userDb;
+  Personal({Key key, @required this.userDb}) : super(key: key);
   @override
-  PersonalState createState() => PersonalState();
+  PersonalState createState() => PersonalState(userDb:userDb);
 }
 
 class PersonalState extends State<Personal> {
   DateTime dateB = new DateTime.now();
-
+  final User userDb;
+  PersonalState({Key key, @required this.userDb}):super();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    String gender;
+    TextEditingController name = TextEditingController();
+    name.text=userDb.name;
+    TextEditingController mobile = TextEditingController();
+    mobile.text=userDb.mobile;
+    TextEditingController email = TextEditingController();
+    email.text=userDb.email;
+    TextEditingController languages = TextEditingController();
+    languages.text=userDb.languages as String;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Personal Information'),
@@ -25,6 +37,7 @@ class PersonalState extends State<Personal> {
         body: ListView(
           children: <Widget>[
             TextField(
+              controller: name,
               decoration: InputDecoration(labelText: 'Name'),
             ),
             TextField(
@@ -32,9 +45,11 @@ class PersonalState extends State<Personal> {
                 WhitelistingTextInputFormatter.digitsOnly
               ],
               keyboardType: TextInputType.number,
+              controller: mobile,
               decoration: InputDecoration(labelText: 'Mobile Number'),
             ),
             TextField(
+              controller: email,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: 'Email-ID'),
             ),
@@ -46,6 +61,7 @@ class PersonalState extends State<Personal> {
               decoration: InputDecoration(labelText: 'Age'),
             ),*/
             TextField(
+              controller: languages,
               decoration: InputDecoration(labelText: 'Languages Known'),
             ),
             new FlatButton(
@@ -88,7 +104,7 @@ class PersonalState extends State<Personal> {
             Container(
               
                 margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: Center(child: Education(gender))),
+                child: Center(child: Education(userDb: userDb,))),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -96,10 +112,16 @@ class PersonalState extends State<Personal> {
                 child: RaisedButton(
                   onPressed: () {
                     setState(() {
-                      Navigator.push(context,
+                      userDb.languages=languages as List;
+                      userDb.email=email.text;
+                      userDb.mobile=mobile.text;
+                      userDb.name=name.text;
+                      userDb.dob=dateB;
+                      /*Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return Profile();
-                      }));
+                      }));*/
+                      Navigator.pop(context);
                     });
                   },
                   color: Color(0xFF21BFBD),

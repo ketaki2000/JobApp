@@ -4,7 +4,7 @@ import 'package:foodwango_job/screens/login_screen.dart';
 import 'package:foodwango_job/screens/registration_screen.dart';
 import 'package:foodwango_job/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:foodwango_job/models/user.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/wrapper.dart';
 
 void main() => runApp(MyApp());
@@ -13,14 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context)=>User(),
-      //value: Authservice().user,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: MyHomePage(),
-        debugShowCheckedModeBanner: false,
-      ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

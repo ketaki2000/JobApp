@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
+import 'package:foodwango_job/screens/job_description.dart';
 import 'package:foodwango_job/services/auth.dart';
 
 class homescreen extends StatefulWidget {
+  final Recruiter recDb;
+  homescreen({Key key, @required this.recDb}) : super(key: key);
   @override
-  _homescreenstate createState() => _homescreenstate();
+  _homescreenstate createState() => _homescreenstate(recDb: recDb);
 }
 
 class _homescreenstate extends State<homescreen> {
+  final Recruiter recDb;
+  _homescreenstate({Key key, @required this.recDb}) : super();
   final Authservice _auth = Authservice();
   @override
   Widget build(BuildContext context) {
@@ -77,7 +83,9 @@ class _homescreenstate extends State<homescreen> {
                             color: Colors.black,
                           )),
                       onTap: () {
-                        Navigator.pushNamed(context, '/second');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return jobdescription(recDb:recDb);
+                        }));
                       },
                     ),
                   ),
@@ -122,6 +130,7 @@ class _homescreenstate extends State<homescreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          onChanged: (role){recDb.role=role;},
                         )),
                     Container(
                       child: Text(
@@ -148,6 +157,7 @@ class _homescreenstate extends State<homescreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          onChanged: (city){recDb.city=city;},
                         )),
                     Container(
                       child: Text(
@@ -174,6 +184,7 @@ class _homescreenstate extends State<homescreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          onChanged: (locality){recDb.locality=locality;},
                         )),
                     Container(
                       child: Text(
@@ -206,6 +217,7 @@ class _homescreenstate extends State<homescreen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
+                                onChanged: (minSal){recDb.minSal=minSal;},
                               )),
                           Container(
                             child: Text(
@@ -232,6 +244,7 @@ class _homescreenstate extends State<homescreen> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
+                                onChanged: (maxSal){recDb.maxSal=maxSal;},
                               )),
                         ],
                       ),
@@ -262,6 +275,8 @@ class _homescreenstate extends State<homescreen> {
                                     color: Color(0xFF21BFBD), width: 2.0),
                                 borderRadius: BorderRadius.circular(10),
                               )),
+                          onChanged: (staff){recDb.staff=staff;},
+
                         )),
                   ])))
         ],

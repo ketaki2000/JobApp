@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
+import 'package:foodwango_job/screens/RecruiterHome.dart';
 import 'package:foodwango_job/services/auth.dart';
 
 class companydetails extends StatefulWidget {
+  final Recruiter recDb;
+  companydetails({Key key, @required this.recDb}) : super(key: key);
   @override
-  _companydetailsstate createState() => _companydetailsstate();
+  _companydetailsstate createState() => _companydetailsstate(recDb: recDb);
 }
 
 class _companydetailsstate extends State<companydetails> {
+  final Recruiter recDb;
+  _companydetailsstate({Key key, @required this.recDb}) : super();
   final Authservice _auth = Authservice();
   @override
   Widget build(BuildContext context) {
@@ -211,7 +217,11 @@ class _companydetailsstate extends State<companydetails> {
                     Container(
                         padding: const EdgeInsets.only(left: 20.0, top: 20.0),
                         child: RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return RecruiterHome(recDb:recDb);
+                            }));
+                          },
                           child: Text('Submit'),
                           color: Color(0xFF21BFBD),
                         )),

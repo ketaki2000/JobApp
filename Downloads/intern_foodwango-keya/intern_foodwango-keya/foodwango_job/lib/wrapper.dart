@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodwango_job/main.dart';
 import 'package:provider/provider.dart';
-import 'package:foodwango_job/models/user.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodwango_job/services/database.dart';
 import 'package:foodwango_job/temp.dart';

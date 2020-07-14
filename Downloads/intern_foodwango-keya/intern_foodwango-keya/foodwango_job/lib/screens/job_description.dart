@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
+import 'package:foodwango_job/screens/company_details.dart';
 import 'package:foodwango_job/services/auth.dart';
 
 class jobdescription extends StatefulWidget {
+  final Recruiter recDb;
+  jobdescription({Key key, @required this.recDb}) : super(key: key);
   @override
-  _jobdescriptionstate createState() => _jobdescriptionstate();
+  _jobdescriptionstate createState() => _jobdescriptionstate(recDb: recDb);
 }
 
 class _jobdescriptionstate extends State<jobdescription> {
+  final Recruiter recDb;
+
+  String qual;
+  _jobdescriptionstate({Key key, @required this.recDb}) : super();
   final Authservice _auth = Authservice();
   List<String> qualification = [
     "<10th pass",
@@ -106,7 +114,9 @@ class _jobdescriptionstate extends State<jobdescription> {
                             color: Colors.black,
                           )),
                       onTap: () {
-                        Navigator.pushNamed(context, '/third');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return companydetails(recDb:recDb);
+                        }));
                       },
                     ),
                   ),

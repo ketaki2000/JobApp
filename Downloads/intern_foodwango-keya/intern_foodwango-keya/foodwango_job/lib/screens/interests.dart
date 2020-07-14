@@ -1,22 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/home.dart';
 
 import 'homepro.dart';
 
 class InterestedIn extends StatefulWidget {
+  final User userDb;
+  InterestedIn({Key key, @required this.userDb,this.user}) : super(key: key);
   String user='';
-  InterestedIn(this.user);
+
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return InterestedInState(user);
+    return InterestedInState(user: user,userDb: userDb);
   }
 }
 
 class InterestedInState extends State<InterestedIn> {
+  final User userDb;
+  InterestedInState({Key key,@required this.userDb,this.user}):super();
   String user='';
-  InterestedInState(this.user);
+
   List<String> interestedIn = [
     'Accounts',
     'Acting',
@@ -176,7 +182,7 @@ class InterestedInState extends State<InterestedIn> {
   var experience;
   var word;
   var skill;
-  List<String> skillList = [];
+  //List<String> skillList = [];
   final name = TextEditingController();
 
   Widget interests(String wordPair) {
@@ -215,7 +221,7 @@ class InterestedInState extends State<InterestedIn> {
               Container(
                 margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Center(
-                  child: experience = Experience(),
+                  child: experience = Experience(userDb:userDb),
                 ),
               ),
             ],
@@ -236,15 +242,17 @@ class InterestedInState extends State<InterestedIn> {
               icon: new Icon(Icons.navigate_next),
               onPressed: () {
                 setState(() async {
-                  if (checkedWords.isNotEmpty)
+                  if (checkedWords.isNotEmpty){
+                    userDb.interests=checkedWords;
                     val = await Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                           if(user=='Normal')
-                            {return Home();}
+                            {
+                              return Home(userDb:userDb);}
                           else{
-                            return Homepro();
+                            return Homepro(userDb:userDb);
                           }
-                    }));
+                    }));}
                   if (val == "true") {
                     Navigator.pop(context, "true");
                   }
@@ -282,15 +290,12 @@ class InterestedInState extends State<InterestedIn> {
   }
 }
 
-class Experience extends StatefulWidget {
-  @override
-  ExperienceState createState() => new ExperienceState();
-}
 
-class ExperienceState extends State<Experience> {
+
+class Experience extends StatelessWidget {
   int _value = 0;
-
-  List<String> experience = [
+  final User userDb;
+  Experience({Key key, @required this.userDb}) : super(key: key);  List<String> experience = [
     'Fresher',
     '1-6 Months',
     '1-2 Years',
@@ -314,10 +319,11 @@ class ExperienceState extends State<Experience> {
             selected: _value == index,
             selectedColor: Color(0xFF21BFBD),
             onSelected: (bool selected) {
-              setState(() {
+              //setState(() {
                 if (_value != index) _value = selected ? index : null;
+                userDb.workExp=experience[_value];
                 return experience[_value];
-              });
+              //});
             },
           );
         },
@@ -325,7 +331,7 @@ class ExperienceState extends State<Experience> {
     );
   }
 }
-
+/*
 class filterChipWidget extends StatefulWidget {
   final String chipName;
 
@@ -353,4 +359,4 @@ class _filterChipWidgetState extends State<filterChipWidget> {
       selectedColor: Colors.blueAccent,
     );
   }
-}
+}*/

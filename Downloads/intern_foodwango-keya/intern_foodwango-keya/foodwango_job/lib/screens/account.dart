@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:foodwango_job/screens/profile.dart';
 import 'package:foodwango_job/services/auth.dart';
-
-import '../main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 
 class Account extends StatefulWidget {
+  final User userDb;
+  Account({Key key, @required this.userDb}) : super(key: key);
   @override
-  _AccountState createState() => _AccountState();
+  _AccountState createState() => _AccountState(userDb: userDb);
 }
 
 class _AccountState extends State<Account> {
   final Authservice _auth = Authservice();
-
+  final db = Firestore.instance;
+  final User userDb;
+  _AccountState({Key key,@required this.userDb}):super();
   List details = ['Profile', 'My Jobs', 'Log out'];
   bool pop;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    String username=userDb.name;
     return Scaffold(
         appBar: AppBar(
           title: Text('My Account'),
@@ -31,13 +36,18 @@ class _AccountState extends State<Account> {
               trailing: Icon(Icons.navigate_next),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Profile();
+                  return Profile(userDb:userDb);
                 }));
               },
             ),
             jobs(),
             GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  //await db.collection('users').add(userDb.toJson());
+                  final CollectionReference userCollection =
+                  Firestore.instance.collection('users');
+                  await userCollection
+                      .document(userDb.uid).setData(userDb.toJson());
                   _auth.signOut();
                   signout();
                 },

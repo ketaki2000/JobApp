@@ -1,20 +1,32 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:foodwango_job/screens/profile.dart';
 
 class Education extends StatefulWidget {
+  final User userDb;
+  Education({Key key, @required this.userDb}) : super(key: key);
   @override
-  EducationState createState() => EducationState();
+  EducationState createState() => EducationState(userDb: userDb);
 }
 
 class EducationState extends State<Education> {
-  DateTime date = new DateTime.now();
+  DateTime dateSch = new DateTime.now();
   DateTime dateColg = new DateTime.now();
+  User userDb;
+
+  EducationState({Key key,@required this.userDb}):super();
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController schoolName = TextEditingController();
+    schoolName.text = userDb.schoolName;
+    TextEditingController colgName = TextEditingController();
+    colgName.text = userDb.collegeName;
+    TextEditingController colgDegree = TextEditingController();
+    colgDegree.text = userDb.collegeDegree;
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -34,7 +46,7 @@ class EducationState extends State<Education> {
             Container(
               margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: Center(
-                child: Gender(),
+                child: Gender(userDb: userDb,),
               ),
             ),
             Text(
@@ -45,7 +57,7 @@ class EducationState extends State<Education> {
             Container(
                 margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: Center(
-                  child: English(),
+                  child: English(userDb: userDb,),
                 )),
             Container(
               margin: EdgeInsets.only(bottom: 10),
@@ -60,12 +72,13 @@ class EducationState extends State<Education> {
                 children: <Widget>[
                   TextField(
                     decoration: InputDecoration(labelText: 'Enter School Name'),
+                    controller: schoolName,
                   ),
                   new FlatButton(
                     child: new Row(
                       children: <Widget>[
                         new Text(
-                          '${formatDate(date, [
+                          '${formatDate(dateSch, [
                                 dd,
                                 '/',
                                 mm,
@@ -86,12 +99,12 @@ class EducationState extends State<Education> {
                     onPressed: () async {
                       final dtPick = await showDatePicker(
                           context: context,
-                          initialDate: date,
+                          initialDate: dateSch,
                           firstDate: DateTime(DateTime.now().year - 20),
                           lastDate: DateTime(DateTime.now().year + 10));
                       if (dtPick != null) {
                         setState(() {
-                          date = dtPick;
+                          dateSch = dtPick;
                         });
                       }
                     },
@@ -113,8 +126,10 @@ class EducationState extends State<Education> {
                   TextField(
                     decoration:
                         InputDecoration(labelText: 'Enter College Name'),
+                    controller: colgName,
                   ),
                   TextField(
+                    controller: colgDegree,
                     decoration:
                         InputDecoration(labelText: 'Enter College Degree'),
                   ),
@@ -163,10 +178,16 @@ class EducationState extends State<Education> {
                 child: RaisedButton(
                   onPressed: () {
                     setState(() {
-                      Navigator.push(context,
+                      userDb.collegeDegree=colgDegree.text;
+                      userDb.collegeName=colgName.text;
+                      userDb.schoolName=schoolName.text;
+                      userDb.schoolDate=dateSch;
+                      userDb.collegeDate=dateColg;
+                      /* Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return Profile();
-                      }));
+                      }));*/
+                      Navigator.pop(context);
                     });
                   },
                   color: Color(0xFF21BFBD),

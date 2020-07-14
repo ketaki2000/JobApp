@@ -1,26 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/screens/interests.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'home.dart';
-import 'homepro.dart';
 import 'interests.dart';
-import 'job_description.dart';
 
 class info extends StatefulWidget {
+  final User userDb;
+  info({Key key, @required this.userDb}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return infoState();
+    return infoState(userDb: userDb);
   }
 }
 
 class infoState extends State<info> {
+  final User userDb;
+  infoState({Key key, @required this.userDb}) : super();
 
   List user = ["Normal User", "Pro User"];
-  int group=1;
-  String select,education,english,gender;
-_sendToServer(){
+  int group = 1;
+  String select, education, english, gender;
+
+/*_sendToServer(){
   DatabaseReference ref = FirebaseDatabase.instance.reference();
   var data = {
     "normalOrPro":select,
@@ -29,7 +33,8 @@ _sendToServer(){
     "gender": gender
   };
   ref.child('node-name').push().set(data);
-}
+}*/
+
   Row addRadioButton(int btnValue, String title, String radio) {
     if (radio == 'true') {
       return Row(
@@ -44,7 +49,9 @@ _sendToServer(){
                 setState(() {
                   print(value);
                   select = value;
-
+                  userDb.seekerType = value;
+                  User(seekerType: select);
+                  print(userDb.seekerType);
                   _showDialog();
                 });
               },
@@ -65,6 +72,8 @@ _sendToServer(){
               setState(() {
                 print(value);
                 select = value;
+                userDb.seekerType = value;
+                User(seekerType: select);
               });
             },
           ),
@@ -102,7 +111,7 @@ _sendToServer(){
                 Container(
                   margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                   child: Center(
-                    child: Gender(),
+                    child: Gender(userDb: userDb,),
                   ),
                 ),
                 Text(
@@ -111,7 +120,7 @@ _sendToServer(){
                 ),
                 Container(
                     margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                    child: Center(child: Education(gender))),
+                    child: Center(child: Education(userDb: userDb,))),
                 Text(
                   'How I Speak English',
                   style: TextStyle(fontSize: 20.0),
@@ -119,7 +128,7 @@ _sendToServer(){
                 Container(
                     margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: Center(
-                      child: English(),
+                      child: English(userDb: userDb,),
                     )),
                 Row(
                   children: <Widget>[
@@ -138,9 +147,7 @@ _sendToServer(){
                       children: <Widget>[
                         addRadioButton(0, 'Normal User', 'false'),
                         addRadioButton(1, 'Pro User', 'true'),
-
                       ],
-
                     ),
                   ],
                 ),
@@ -150,20 +157,19 @@ _sendToServer(){
                     margin: EdgeInsets.only(top: 30.0),
                     child: RaisedButton(
                       onPressed: () {
-                        _sendToServer();
-                        setState(()  {
-
+                        //_sendToServer();
+                        setState(() {
                           if (infoFormKey.currentState.validate()) {
                             if (select == 'Pro User') {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return InterestedIn('Pro');
-                                  }));
+                                return InterestedIn(user:'Pro', userDb: userDb);
+                              }));
                             } else {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return InterestedIn('Normal');
-                                  }));
+                                return InterestedIn(user:'Normal', userDb: userDb);
+                              }));
                             }
                           }
                           if (val == "true") {
@@ -217,16 +223,16 @@ _sendToServer(){
                   style: TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
-                  _sendToServer();
+                  //_sendToServer();
                   if (select == 'Pro User') {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return InterestedIn('Pro');
+                      return InterestedIn(user: 'Pro', userDb: userDb);
                     }));
                   } else {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return Home();
+                      return Home(userDb: userDb);
                     }));
                   }
                 }),
@@ -237,19 +243,12 @@ _sendToServer(){
   }
 }
 
-class Education extends StatefulWidget {
-  String gender;
-  Education(this.gender);
-  @override
-  _EducationState createState() => new _EducationState(gender);
-}
-
-class _EducationState extends State<Education> {
+class Education extends StatelessWidget {
   int _value = 1;
-  String gender;
-  _EducationState(this.gender);
+  final User userDb;
 
-  List<String> education = ['Male', 'Female', 'Other'];
+  Education({Key key, @required this.userDb}) : super(key: key);
+  final List<String> education = ['Male', 'Female', 'Other'];
 
   @override
   Widget build(BuildContext context) {
@@ -258,7 +257,7 @@ class _EducationState extends State<Education> {
       spacing: 5.0,
       children: List<Widget>.generate(
         3,
-            (int index) {
+        (int index) {
           return ChoiceChip(
             label: Text(
               education[index],
@@ -267,11 +266,11 @@ class _EducationState extends State<Education> {
             selected: _value == index,
             selectedColor: Color(0xFF21BFBD),
             onSelected: (bool selected) {
-              setState(() {
+              //setState(() {
                 if (_value != index) _value = selected ? index : null;
-                gender=education[_value];
+                userDb.gender = education[_value];
                 return education[_value];
-              });
+              //});
             },
           );
         },
@@ -280,18 +279,11 @@ class _EducationState extends State<Education> {
   }
 }
 
-class Gender extends StatefulWidget {
-  String education;
- // Gender(this.education);
-  @override
-  GenderState createState() => GenderState();
-}
-
-class GenderState extends State<Gender> {
-  String education;
- // GenderState(this.education);
+class Gender extends StatelessWidget {
   int _value = 1;
+  final User userDb;
 
+  Gender({Key key, @required this.userDb}) : super(key: key);
   List<String> gender = ['Below 10th', '10th Pass', '12th Pass', 'Graduate'];
 
   @override
@@ -301,7 +293,7 @@ class GenderState extends State<Gender> {
       spacing: 5.0,
       children: List<Widget>.generate(
         4,
-            (int index) {
+        (int index) {
           return ChoiceChip(
             label: Text(
               gender[index],
@@ -310,11 +302,11 @@ class GenderState extends State<Gender> {
             selected: _value == index,
             selectedColor: Color(0xFF21BFBD),
             onSelected: (bool selected) {
-              setState(() {
-                if (_value != index) _value = selected ? index : null;
-                education=gender[_value];
-                return gender[_value];
-              });
+              // setState(() {
+              if (_value != index) _value = selected ? index : null;
+              userDb.education = gender[_value];
+              return gender[_value];
+              //});
             },
           );
         },
@@ -323,14 +315,11 @@ class GenderState extends State<Gender> {
   }
 }
 
-class English extends StatefulWidget {
-  @override
-  EnglishState createState() => EnglishState();
-}
-
-class EnglishState extends State<English> {
+class English extends StatelessWidget {
   int _value = 1;
+  final User userDb;
 
+  English({Key key, @required this.userDb}) : super(key: key);
   List<String> english = [
     'No English',
     'Little English',
@@ -343,13 +332,32 @@ class EnglishState extends State<English> {
     return Wrap(
       runSpacing: 5.0,
       spacing: 5.0,
-      children: <Widget>[
-        choiceChipWidget(english),
-      ],
+      children: List<Widget>.generate(
+        4,
+        (int index) {
+          return ChoiceChip(
+            label: Text(
+              english[index],
+              style: TextStyle(color: Colors.black),
+            ),
+            selected: _value == index,
+            selectedColor: Color(0xFF21BFBD),
+            onSelected: (bool selected) {
+              //setState(() {
+              if (_value != index) _value = selected ? index : null;
+              //userDb.english = english[_value];
+              User(english: english[_value]);
+              return english[_value];
+              //});
+            },
+          );
+        },
+      ).toList(),
     );
   }
 }
 
+/*
 class choiceChipWidget extends StatefulWidget {
   final List<String> reportList;
 
@@ -397,7 +405,7 @@ class _choiceChipWidgetState extends State<choiceChipWidget> {
     );
   }
 }
-
+*/
 class _SystemPadding extends StatelessWidget {
   final Widget child;
 
