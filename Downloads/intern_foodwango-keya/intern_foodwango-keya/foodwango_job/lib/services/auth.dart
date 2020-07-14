@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodwango_job/models/RecruiterDb.dart';
 import 'package:foodwango_job/models/SeekerDb.dart';
 import 'package:foodwango_job/services/database.dart';
 

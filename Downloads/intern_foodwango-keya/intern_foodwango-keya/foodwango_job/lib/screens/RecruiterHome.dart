@@ -26,12 +26,12 @@ class _RecruiterHomeState extends State<RecruiterHome> {
       body: Center(
         child: RaisedButton(
           child: Text('Submit'),
-          onPressed: ()async{
+          /*onPressed: ()async{
             final CollectionReference userCollection =
             Firestore.instance.collection('users');
             await userCollection
                 .document(recDb.uid).setData(recDb.build(context).toJson());
-          },
+          },*/
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:foodwango_job/models/RecruiterDb.dart';
 import 'package:foodwango_job/screens/homescreen.dart';
 import 'package:foodwango_job/screens/info.dart';
 import 'package:foodwango_job/services/auth.dart';

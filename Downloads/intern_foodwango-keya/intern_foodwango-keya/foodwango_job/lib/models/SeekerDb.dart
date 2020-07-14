@@ -1,7 +1,11 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class User extends ChangeNotifier {
+  List<Document> certificates;
+  Document resume;
   String uid;
   String email;
   String name;
